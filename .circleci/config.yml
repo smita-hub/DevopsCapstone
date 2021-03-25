@@ -1,0 +1,65 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@1.5.0
+  aws-eks: circleci/aws-eks@1.0.3
+  kubernetes: circleci/kubernetes@0.11.2
+
+jobs:
+  build_flask:
+    docker:
+      - image: python:3.7.3-stretch
+    working_directory: ~/repo
+      
+    steps:
+      steps:
+      - checkout
+      - run:
+          name: verify the system
+          command: |
+            ls -Rla ~/
+      
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            make install
+            
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+          
+workflows:
+  build:
+    jobs:
+      - build_flask
+      - docker/hadolint:
+          trusted-registries: docker.io
+          requires:
+            - build_flask
+      - docker/publish:
+          attach-at: './'
+          image: ${DOCKERHUB_USER}/flask-app
+          tag: latest${CIRCLE_WORKFLOW_ID}
+          context: capstone
+          requires:
+            - docker/hadolint
+      - aws-eks/update-container-image:
+          aws-region: us-west-2
+          cluster-name: capstone
+          container-image-updates: flask-app=docker.io/${DOCKERHUB_USER}/flask-app:latest${CIRCLE_WORKFLOW_ID}
+          get-rollout-status: true
+          namespace: flask-app
+          resource-name: deployment/flask-app
+          record: true
+          show-kubectl-command: true
+          watch-timeout: 5m
+          requires:
+            - "docker/publish"
