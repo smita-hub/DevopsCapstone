@@ -12,7 +12,6 @@ jobs:
     working_directory: ~/repo
       
     steps:
-      steps:
       - checkout
       - run:
           name: verify the system
@@ -50,8 +49,7 @@ workflows:
       - build-flask
       - docker/hadolint:
           trusted-registries: docker.io
-          requires:
-            - build-flask
+          requires: [build-flask]
       - docker/publish:
           attach-at: './'
           image: smita0208/flask-app
