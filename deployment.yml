@@ -3,8 +3,9 @@ kind: Deployment
 metadata:
   labels:
     app: flask-app
-    version: latest
+    version: latesta55c4539-3a98-42ca-8b71-caa43afa51d8
   name: flask-app
+  namespace: flask-app
 spec:
   replicas: 2
   selector:
@@ -19,7 +20,7 @@ spec:
         app: flask-app
     spec:
       containers:
-      - image: docker.io/smita0208/flask-app:latest
+      - image: docker.io/smita0208/flask-app:latesta55c4539-3a98-42ca-8b71-caa43afa51d8
         name: flask-app
         ports:
         - containerPort: 80
