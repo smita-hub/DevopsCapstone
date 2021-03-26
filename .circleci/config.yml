@@ -60,7 +60,7 @@ workflows:
       - aws-eks/update-container-image:
           aws-region: us-west-2
           cluster-name: capstone
-          container-image-updates: flask-app=docker.io/${DOCKERHUB_USER}/hello_flask_app:latest${CIRCLE_WORKFLOW_ID}
+          container-image-updates: flask-app=docker.io/${DOCKERHUB_USER}/flask-app:latest${CIRCLE_WORKFLOW_ID}
           namespace: flask-app
           resource-name: deployment/flask-app
           record: true

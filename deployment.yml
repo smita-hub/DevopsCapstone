@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: flask-app
-    version: latesta55c4539-3a98-42ca-8b71-caa43afa51d8
+    version: latest4ac30585-3a77-418b-8226-e65e2ca4a00d
   name: flask-app
   namespace: flask-app
 spec:
@@ -20,7 +20,7 @@ spec:
         app: flask-app
     spec:
       containers:
-      - image: docker.io/smita0208/flask-app:latesta55c4539-3a98-42ca-8b71-caa43afa51d8
+      - image: docker.io/smita0208/flask-app:latest4ac30585-3a77-418b-8226-e65e2ca4a00d
         name: flask-app
         ports:
         - containerPort: 80
