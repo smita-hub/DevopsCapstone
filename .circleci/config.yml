@@ -54,6 +54,7 @@ workflows:
           attach-at: './'
           image: ${DOCKERHUB_USER}/flask-app
           tag: latest${CIRCLE_WORKFLOW_ID}
+          context: capstone
           requires:
             - docker/hadolint
       - aws-eks/update-container-image:
