@@ -19,7 +19,7 @@ spec:
         app: flask-app
     spec:
       containers:
-      - image: docker.io/smita0208/hello_flask_app:latest
+      - image: docker.io/smita0208/flask-app:latest
         name: flask-app
         ports:
         - containerPort: 8080
