@@ -22,6 +22,6 @@ spec:
       - image: docker.io/smita0208/flask-app:latest
         name: flask-app
         ports:
-        - containerPort: 8080
+        - containerPort: 80
         resources: {}
 status: {}
