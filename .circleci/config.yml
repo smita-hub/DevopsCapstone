@@ -5,8 +5,9 @@ orbs:
   aws-eks: circleci/aws-eks@1.0.3
   kubernetes: circleci/kubernetes@0.11.2
 
+# Defining my jobs
 jobs:
-  build-flask:
+  build-flask: #Docker build job which uses make file to install and lint
     docker:
       - image: python:3.7.3-stretch
     working_directory: ~/repo
@@ -42,7 +43,8 @@ jobs:
           command: |
             . venv/bin/activate
             make lint
-          
+
+# this workflow builds docker image ,pushes to docker hub and uses rolling update to update image          
 workflows:
   build:
     jobs:
@@ -50,6 +52,7 @@ workflows:
       - docker/hadolint:
           trusted-registries: docker.io
           requires: [build-flask]
+      #publishes docker image to docker hub
       - docker/publish:
           attach-at: './'
           image: ${DOCKERHUB_USER}/flask-app
@@ -57,6 +60,7 @@ workflows:
           context: capstone
           requires:
             - docker/hadolint
+      #updates container image using rolling update strategy
       - aws-eks/update-container-image:
           aws-region: us-west-2
           cluster-name: capstone
@@ -66,6 +70,6 @@ workflows:
           resource-name: deployment/flask-app
           record: true
           show-kubectl-command: true
-          watch-timeout: 5m
+          watch-timeout: 10m
           requires:
             - "docker/publish"
