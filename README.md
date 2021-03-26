@@ -15,7 +15,7 @@ eksctl create nodegroup --cluster devops-capstone --node-type t3.medium --nodes 
 
 aws eks --region us-west-2 update-kubeconfig --name devops-capstone --role-arn arn:aws:iam::765181591880:role/UdacityFlaskDeployCBKubectlRole
 
-xxxx
+xxxxx
 
 --ssh-public-key id_rsa.pub
 
