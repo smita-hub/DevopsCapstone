@@ -62,7 +62,6 @@ workflows:
           cluster-name: capstone
           container-image-updates: flask-app=docker.io/${DOCKERHUB_USER}/hello_flask_app:latest${CIRCLE_WORKFLOW_ID}
           get-rollout-status: true
-          namespace: flask-app
           resource-name: deployment/flask-app
           record: true
           show-kubectl-command: true
