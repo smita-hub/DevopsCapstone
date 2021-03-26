@@ -6,7 +6,7 @@ orbs:
   kubernetes: circleci/kubernetes@0.11.2
 
 jobs:
-  build_flask:
+  build-flask:
     docker:
       - image: python:3.7.3-stretch
     working_directory: ~/repo
@@ -47,11 +47,11 @@ jobs:
 workflows:
   build:
     jobs:
-      - build_flask
+      - build-flask
       - docker/hadolint:
           trusted-registries: docker.io
           requires:
-            - build_flask
+            - build-flask
       - docker/publish:
           attach-at: './'
           image: smita0208/flask-app
