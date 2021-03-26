@@ -30,11 +30,19 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             make install
+            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
+            chmod +x /bin/hadolint
             
       - save_cache:
           paths:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
+
+      - run:
+          name: run lint
+          command: |
+            . venv/bin/activate
+            make lint
           
 workflows:
   build:
@@ -46,7 +54,7 @@ workflows:
             - build_flask
       - docker/publish:
           attach-at: './'
-          image: ${DOCKERHUB_USER}/flask-app
+          image: smita0208/flask-app
           tag: latest${CIRCLE_WORKFLOW_ID}
           context: capstone
           requires:
@@ -54,7 +62,7 @@ workflows:
       - aws-eks/update-container-image:
           aws-region: us-west-2
           cluster-name: capstone
-          container-image-updates: flask-app=docker.io/${DOCKERHUB_USER}/flask-app:latest${CIRCLE_WORKFLOW_ID}
+          container-image-updates: flask-app=docker.io/smita0208/hello_flask_app:latest${CIRCLE_WORKFLOW_ID}
           get-rollout-status: true
           namespace: flask-app
           resource-name: deployment/flask-app
