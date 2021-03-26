@@ -66,6 +66,6 @@ workflows:
           resource-name: deployment/flask-app
           record: true
           show-kubectl-command: true
-          watch-timeout: 5m
+          watch-timeout: 20m
           requires:
             - "docker/publish"
