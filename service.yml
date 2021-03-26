@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: myloadbalancer
+  name: myloadersmita
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
   selector:
     app: flask-app
   ports:
-    - port: 8000
+    - port: 80
       targetPort: 80
       protocol: TCP
   type: LoadBalancer
